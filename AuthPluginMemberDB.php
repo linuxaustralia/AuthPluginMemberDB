@@ -51,8 +51,8 @@ class AuthPluginMemberDB extends AuthPlugin {
 	var $dblink = null;
 
 	function AuthPluginMemberDB() {
-		$this->dblink = mysql_connect($this->server, $this->dbuser, $this->dbpass);
-		mysql_select_db($this->dbname, $this->dblink);
+		$this->dblink = mysql_connect($this->server, $this->dbuser, $this->dbpass) or die ('Cannot connect to authentication database');
+		mysql_select_db($this->dbname, $this->dblink) or die('Cannot connect to authentication database');
 	}
 
 	/**
