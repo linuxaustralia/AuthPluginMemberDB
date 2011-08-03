@@ -67,7 +67,7 @@ class AuthPluginMemberDB extends AuthPlugin {
 	 */
 	function userExists( $username ) {
 		$username_esc = mysql_escape_string($username);
-		$q = "SELECT member_id FROM passwd WHERE email LIKE '{$username_esc}'";
+		$q = "SELECT p.member_id FROM passwd AS p LEFT JOIN members AS m ON(p.member_id = m.id) WHERE m.email LIKE '{$username_esc}' LIMIT 1";
 		$r = mysql_query($q, $this->dblink);
 		if (!$r) die(mysql_error($this->dblink));
 
@@ -95,7 +95,7 @@ class AuthPluginMemberDB extends AuthPlugin {
 			return false;
 		$row = mysql_fetch_object($r);
 
-		ereg("^[0-9a-z]+", $row->password, $password);
+		ereg("^[0-9a-z]+", $row->password, $dbpass);
 		ereg("^[0-9a-zA-Z]+", $row->salt, $dbsalt);
 
 		// Check if login is correct.
